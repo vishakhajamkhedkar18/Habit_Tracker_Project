@@ -1,6 +1,6 @@
-https://github.com/vishakhajamkhedkar18/smart-habit-tracker.git
+https://github.com/vishakhajamkhedkar18/Habit_Tracker_Project
 
-git commands for push and commit code to code
+git commands for push and commit code to git
 
 git init
 git add .

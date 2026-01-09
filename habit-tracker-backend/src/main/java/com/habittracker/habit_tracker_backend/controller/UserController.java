@@ -21,4 +21,16 @@ public class UserController {
     public User getUser(@PathVariable Long userid){
         return userService.getUserById(userid);
     }
+
+    // SIGN UP
+    @PostMapping("/signup")
+    public User signup(@RequestBody User user) {
+        return userService.signup(user);
+    }
+
+    // LOGIN
+    @PostMapping("/login")
+    public User login(@RequestParam String email) {
+        return userService.login(email);
+    }
 }

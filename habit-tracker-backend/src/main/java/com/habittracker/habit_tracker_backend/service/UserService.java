@@ -19,4 +19,19 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    // SIGN UP
+    public User signup(User user) {
+        userRepository.findByEmail(user.getEmail())
+                .ifPresent(u -> {
+                    throw new RuntimeException("User already exists");
+                });
+        return userRepository.save(user);
+    }
+
+    // LOGIN
+    public User login(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }

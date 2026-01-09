@@ -4,7 +4,7 @@ function HabitList({ habits, refresh }) {
 
     const completeHabit = (id) => {
         // eslint-disable-next-line no-template-curly-in-string
-        axios.post('http://localhost:8080/api/habits/${id}/completed')
+        axios.post(`http://localhost:8080/api/habits/${id}/completed`)
             .then(refresh);
     };
 
