@@ -1,0 +1,55 @@
+https://github.com/vishakhajamkhedkar18/smart-habit-tracker.git
+
+git commands for push and commit code to code
+
+git init
+git add .
+git commit -m "<comment>"
+
+Connect to GitHub:
+
+git branch -M main
+git remote add origin <your-github-repo-url>
+git push -u origin main
+
+PostgreSQL - password - Vishu
+	     port - 5433
+
+
+http://localhost:8080/api/health
+http://localhost:8080/api/test-db
+
+
+A habit has:
+
+Name (e.g., “Drink Water”)
+
+Start date
+
+Current streak
+
+Last completed date
+
+Belongs to a user
+
+We will calculate streak automatically, not manually.
+
+
+
+
+---- important streak calculating logic ----
+
+if (habit.getLastCompletedDate() == null) {
+            habit.setCurrentStreak(1);
+        } else if (habit.getLastCompletedDate().plusDays(1).equals(today)) {
+            habit.setCurrentStreak(habit.getCurrentStreak() + 1);
+        } else if (!habit.getLastCompletedDate().equals(today)) {
+            habit.setCurrentStreak(1);
+        } 
+
+
+
+
+------ react ------
+
+npm install axios ---> connect react to backend
