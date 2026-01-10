@@ -53,3 +53,55 @@ if (habit.getLastCompletedDate() == null) {
 ------ react ------
 
 npm install axios ---> connect react to backend
+
+
+/api/users/getUser/{userid}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+✅ Backend Improvements
+
+Clean API structure
+
+Validation & proper error handling
+
+DTOs (no direct entity exposure)
+
+Pagination & sorting
+
+Soft deletes
+
+Meaningful API responses
+
+✅ Frontend Improvements
+
+Proper screens (Auth, Dashboard)
+
+Basic styling
+
+Loading & error states
+
+Reusable components
+
+✅ Product Features (Creative Part)
+
+Daily habit reminder logic (backend)
+
+Streak break detection
+
+Progress analytics
+
+Motivation messages
+
+Habit categories

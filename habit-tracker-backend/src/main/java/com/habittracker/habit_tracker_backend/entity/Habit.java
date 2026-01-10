@@ -1,6 +1,7 @@
 package com.habittracker.habit_tracker_backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Habit name is required")
     private String name;
 
     private LocalDate startDate;

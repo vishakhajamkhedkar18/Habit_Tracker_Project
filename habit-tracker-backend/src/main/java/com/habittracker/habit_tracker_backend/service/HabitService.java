@@ -1,6 +1,8 @@
 package com.habittracker.habit_tracker_backend.service;
 
+import com.habittracker.habit_tracker_backend.dto.HabitDto;
 import com.habittracker.habit_tracker_backend.entity.Habit;
+import com.habittracker.habit_tracker_backend.exceptions.ResourceNotFoundException;
 import com.habittracker.habit_tracker_backend.repository.HabitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,12 @@ public class HabitService {
     }
 
     public Habit getHabitDetails(Long habitId){
-        Habit habit = habitRepository.findById(habitId).orElseThrow(() -> new RuntimeException("Habit not found for id entered "+ habitId));
+        Habit habit = habitRepository.findById(habitId).orElseThrow(() -> new ResourceNotFoundException("Habit not found for id entered "+ habitId));
         return habit;
     }
 
     public Habit markHabitCompleted(Long habitId) {
-        Habit habit = habitRepository.findById(habitId).orElseThrow(() -> new RuntimeException("Habit not found"));
+        Habit habit = habitRepository.findById(habitId).orElseThrow(() -> new ResourceNotFoundException("Habit not found"));
 
         LocalDate today = LocalDate.now();
 
@@ -39,6 +41,15 @@ public class HabitService {
 
         habit.setLastCompletedDate(today);
         return habitRepository.save(habit);
+    }
+
+    public HabitDto toDto(Habit habit){
+        return new HabitDto(
+                habit.getId(),
+                habit.getName(),
+                habit.getLastCompletedDate(),
+                habit.getCurrentStreak()
+                );
     }
 
 }

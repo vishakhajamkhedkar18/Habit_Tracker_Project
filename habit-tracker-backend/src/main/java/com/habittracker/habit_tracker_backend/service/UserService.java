@@ -1,6 +1,9 @@
 package com.habittracker.habit_tracker_backend.service;
 
+import com.habittracker.habit_tracker_backend.dto.UserDto;
 import com.habittracker.habit_tracker_backend.entity.User;
+import com.habittracker.habit_tracker_backend.exceptions.BadRequestException;
+import com.habittracker.habit_tracker_backend.exceptions.ResourceNotFoundException;
 import com.habittracker.habit_tracker_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +24,25 @@ public class UserService {
     }
 
     // SIGN UP
-    public User signup(User user) {
+    public UserDto signup(User user) {
         userRepository.findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("User already exists");
+                    throw new BadRequestException("User already exists");
                 });
-        return userRepository.save(user);
+        return toDto(userRepository.save(user));
     }
 
     // LOGIN
-    public User login(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public UserDto login(String email) {
+        return toDto(userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+    }
+
+    public UserDto toDto(User user) {
+        return new UserDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 }

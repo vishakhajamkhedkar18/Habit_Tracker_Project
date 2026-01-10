@@ -1,5 +1,6 @@
 package com.habittracker.habit_tracker_backend.controller;
 
+import com.habittracker.habit_tracker_backend.dto.HabitDto;
 import com.habittracker.habit_tracker_backend.entity.Habit;
 import com.habittracker.habit_tracker_backend.repository.HabitRepository;
 import com.habittracker.habit_tracker_backend.service.HabitService;
