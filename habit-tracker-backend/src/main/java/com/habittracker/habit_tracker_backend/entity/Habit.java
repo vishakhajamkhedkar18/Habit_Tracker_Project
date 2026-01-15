@@ -1,5 +1,6 @@
 package com.habittracker.habit_tracker_backend.entity;
 
+import com.habittracker.habit_tracker_backend.enums.HabitCategory;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -27,4 +28,7 @@ public class Habit {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private HabitCategory category;
 }

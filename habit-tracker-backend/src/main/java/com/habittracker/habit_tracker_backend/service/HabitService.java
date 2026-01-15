@@ -2,6 +2,7 @@ package com.habittracker.habit_tracker_backend.service;
 
 import com.habittracker.habit_tracker_backend.dto.HabitDto;
 import com.habittracker.habit_tracker_backend.entity.Habit;
+import com.habittracker.habit_tracker_backend.exceptions.BadRequestException;
 import com.habittracker.habit_tracker_backend.exceptions.ResourceNotFoundException;
 import com.habittracker.habit_tracker_backend.repository.HabitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,30 +27,44 @@ public class HabitService {
         return habit;
     }
 
-    public Habit markHabitCompleted(Long habitId) {
-        Habit habit = habitRepository.findById(habitId).orElseThrow(() -> new ResourceNotFoundException("Habit not found"));
+    public HabitDto markHabitCompleted(Long habitId) {
+        Habit habit = habitRepository.findById(habitId)
+                .orElseThrow(() -> new ResourceNotFoundException("Habit not found"));
 
         LocalDate today = LocalDate.now();
+        String message;
+
+        if (today.equals(habit.getLastCompletedDate())) {
+            throw new BadRequestException("Habit already completed today");
+        }
 
         if (habit.getLastCompletedDate() == null) {
             habit.setCurrentStreak(1);
+            message = "Great start! Keep building the habit";
         } else if (habit.getLastCompletedDate().plusDays(1).equals(today)) {
             habit.setCurrentStreak(habit.getCurrentStreak() + 1);
-        } else if (!habit.getLastCompletedDate().equals(today)) {
+            message = "Awesome! Streak continues";
+        } else {
             habit.setCurrentStreak(1);
+            message = "Streak restarted — don’t give up!";
         }
 
         habit.setLastCompletedDate(today);
-        return habitRepository.save(habit);
+
+        Habit savedHabit = habitRepository.save(habit);
+
+        return toDto(savedHabit,message);
     }
 
-    public HabitDto toDto(Habit habit){
-        return new HabitDto(
-                habit.getId(),
-                habit.getName(),
-                habit.getLastCompletedDate(),
-                habit.getCurrentStreak()
-                );
+    public HabitDto toDto(Habit habit, String message) {
+        HabitDto dto = new HabitDto();
+        dto.setHabitId(habit.getId());
+        dto.setHabitName(habit.getName());
+        dto.setCurrentStreak(habit.getCurrentStreak());
+        dto.setLastCompletedDate(habit.getLastCompletedDate());
+        dto.setMessage(message);
+        return dto;
     }
+
 
 }

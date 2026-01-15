@@ -14,5 +14,6 @@ public class HabitDto {
     private String habitName;
     private LocalDate lastCompletedDate;
     private int currentStreak;
+    private String message;
 
 }

@@ -25,7 +25,7 @@ public class HabitController {
     }
 
     @PostMapping("/{id}/completed")
-    public Habit markHabitCompleted(@PathVariable Long id){
+    public HabitDto markHabitCompleted(@PathVariable Long id){
         return habitService.markHabitCompleted(id);
     }
 
