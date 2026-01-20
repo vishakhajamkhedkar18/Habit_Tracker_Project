@@ -22,4 +22,7 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Habit> habits;
+
+    @NotBlank
+    private String password;
 }

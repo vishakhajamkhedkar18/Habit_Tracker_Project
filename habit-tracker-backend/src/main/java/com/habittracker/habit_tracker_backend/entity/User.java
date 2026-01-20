@@ -30,4 +30,8 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Habit> habits;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String password;
 }
