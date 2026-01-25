@@ -7,7 +7,10 @@ import HabitList from "./HabitList";
 import axios from "axios";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+      JSON.parse(localStorage.getItem("user"))
+  );
+
   const [habits, setHabits] = useState([]);
 
   const loadHabits = () => {
