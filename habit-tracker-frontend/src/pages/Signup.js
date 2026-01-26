@@ -1,25 +1,62 @@
-import {useState} from "react";
-import {signup} from "../service/authService";
+import { useState } from "react";
+import { signup } from "../service/authService";
 
-function Signup({ setUser }){
+function Signup({ setUser }) {
 
-    const [form, setForm] = useState({name:"",email:"",password:""});
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        password: ""
+    });
 
-    const handleSumbit = () => {
-        signup(form).then(res => {setUser(res.data);
-        localStorage.setItem("user", JSON.stringify(res.data));
-        })
-            .catch(err=>alert(err.response.data.error));
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        signup(form)
+            .then(res => {
+                setUser(res.data);
+                localStorage.setItem("user", JSON.stringify(res.data));
+            })
+            .catch(err => {
+                alert(err?.response?.data?.error || "Signup failed");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
-    return(
-      <div>
-          <h2>Sign up</h2>
-          <input placeholder="Name" onChange={e => setForm({...form,name: e.target.value})}/>
-          <input placeholder="Email" onChange={e => setForm({...form,email: e.target.value})}/>
-          <input type="password" placeholder="Password" onChange={e => setForm({...form, password: e.target.value})}/>
-          <button onClick={handleSumbit}>Sign up</button>
-      </div>
+    return (
+        <form className="auth-form" onSubmit={handleSubmit}>
+            <input
+                placeholder="Name"
+                value={form.name}
+                onChange={e => setForm({ ...form, name: e.target.value })}
+                required
+            />
+
+            <input
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={e => setForm({ ...form, email: e.target.value })}
+                required
+            />
+
+            <input
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={e => setForm({ ...form, password: e.target.value })}
+                required
+            />
+
+            <button type="submit" disabled={loading}>
+                {loading ? "Signing up..." : "Sign up"}
+            </button>
+        </form>
     );
 }
 

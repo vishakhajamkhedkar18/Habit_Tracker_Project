@@ -1,45 +1,65 @@
 import { useState } from "react";
-import Signup from "./Signup";
-import Login from "./Login";
-import HabitForm from "./HabitForm";
-import UserProfile from "./UserProfile";
-import HabitList from "./HabitList";
-import axios from "axios";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import "./Auth.css";
 
 function App() {
-  const [user, setUser] = useState(
-      JSON.parse(localStorage.getItem("user"))
-  );
+    const [user, setUser] = useState(
+        JSON.parse(localStorage.getItem("user"))
+    );
 
-  const [habits, setHabits] = useState([]);
+    const [mode, setMode] = useState("login");
 
-  const loadHabits = () => {
-    if (!user) return;
-    axios.get(`http://localhost:8080/api/habits/user/${user.id}`)
-      .then(res => setHabits(res.data));
-  };
+    const logout = () => {
+        localStorage.removeItem("user");
+        setUser(null);
+    };
 
-  return (
-    <div>
-      <h1>Smart Habit Tracker</h1>
+    if (!user) {
+        return (
+            <div className="auth-container">
+                <div className="auth-card">
+                    <h2 className="auth-title">Smart Habit Tracker</h2>
 
-      {!user && (
-        <>
-          <Signup onAuth={setUser} />
-          <Login onAuth={setUser} />
-        </>
-      )}
+                    <div className="auth-tabs">
+                        <button
+                            className={mode === "login" ? "active" : ""}
+                            onClick={() => setMode("login")}
+                        >
+                            Login
+                        </button>
+                        <button
+                            className={mode === "signup" ? "active" : ""}
+                            onClick={() => setMode("signup")}
+                        >
+                            Sign Up
+                        </button>
+                    </div>
 
-      {user && (
-        <>
-          <p>Welcome, {user.name}</p>
-          <UserProfile user={user} onLogout={() => setUser(null)} />
-          <HabitForm userId={user.id} onHabitCreated={loadHabits} />
-          <HabitList habits={habits} refresh={loadHabits} />
-        </>
-      )}
-    </div>
-  );
+                    {mode === "login" ? (
+                        <Login setUser={setUser} />
+                    ) : (
+                        <Signup setUser={setUser} />
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div style={{ padding: 20 }}>
+            <h1>Smart Habit Tracker</h1>
+            <p>
+                Welcome, <strong>{user.name}</strong>
+                <button onClick={logout} style={{ marginLeft: 10 }}>
+                    Logout
+                </button>
+            </p>
+
+            <Dashboard user={user} />
+        </div>
+    );
 }
 
 export default App;
